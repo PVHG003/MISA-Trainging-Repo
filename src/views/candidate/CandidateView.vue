@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import AddCandidateForm from '@/components/AddCandidateForm.vue'
+import { CandidateTableHeaderEnum } from '@/constants/candidateTableHeaderEnum.js'
+import { CandidateData } from '@/resources/candidateData.js'
+import { checkNull, formatDate, formatGender, parseTags } from '@/utils/formatUtils.js'
 
 const isFormOpen = ref(false)
 
@@ -61,43 +64,25 @@ function handleChangeModalState() {
                   <input type="checkbox" class="candidates-table__checkbox-all" />
                 </th>
 
-                <th class="candidates-table__cell candidates-table__cell--name">Họ tên</th>
-                <th class="candidates-table__cell">Số điện thoại</th>
-                <th class="candidates-table__cell">Email</th>
-                <th class="candidates-table__cell">Chiến dịch tuyển dụng</th>
-                <th class="candidates-table__cell">Vị trí tuyển dụng</th>
-
-                <th class="candidates-table__cell">Vòng tuyển dụng</th>
-                <th class="candidates-table__cell">Đánh giá</th>
-                <th class="candidates-table__cell">Ngày ứng tuyển</th>
-                <th class="candidates-table__cell">Nguồn ứng viên</th>
-                <th class="candidates-table__cell">Trình độ đào tạo</th>
-                <th class="candidates-table__cell">Nơi đào tạo</th>
-                <th class="candidates-table__cell">Chuyên ngành</th>
-                <th class="candidates-table__cell">Nơi làm việc gần đây nhất</th>
-                <th class="candidates-table__cell">Nhân sự khai thác</th>
-                <th class="candidates-table__cell">Đơn vị sử dụng</th>
-                <th class="candidates-table__cell">Phù hợp với chân dung</th>
-                <th class="candidates-table__cell">Khu vực</th>
-                <th class="candidates-table__cell">Người giới thiệu</th>
-                <th class="candidates-table__cell">Thông tin tiếp nhận</th>
-                <th class="candidates-table__cell">Thuộc kho tiềm năng</th>
-                <th class="candidates-table__cell">Tài khoản cổng ứng viên</th>
-                <th class="candidates-table__cell">Thẻ</th>
-                <th class="candidates-table__cell">Trạng thái</th>
-                <th class="candidates-table__cell">Giới tính</th>
-                <th class="candidates-table__cell">Ngày sinh</th>
-                <th class="candidates-table__cell">Địa chỉ</th>
-                <th class="candidates-table__cell">Lý do loại</th>
-                <th class="candidates-table__cell">Cộng tác viên</th>
-                <th class="candidates-table__cell">Ngày tiếp nhận</th>
-                <th class="candidates-table__cell">Trạng thái mời nhận việc</th>
-
-                <th class="candidates-table__cell candidates-table__cell--sticky-action"></th>
+                <th
+                  v-for="(label, key) in CandidateTableHeaderEnum"
+                  :key="key"
+                  class="candidates-table__cell"
+                  :class="{
+                    'candidates-table__cell--name': key === 'CandidateName',
+                    'candidates-table__cell--checkbox': key === 'Checkbox',
+                  }"
+                >
+                  {{ label }}
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="i in 100" :key="i" class="candidates-table__row">
+              <tr
+                v-for="candidate in CandidateData"
+                :key="candidate.key"
+                class="candidates-table__row"
+              >
                 <td class="candidates-table__cell candidates-table__cell--checkbox">
                   <input type="checkbox" class="candidates-table__checkbox-row" />
                 </td>
@@ -105,42 +90,84 @@ function handleChangeModalState() {
                 <td class="candidates-table__cell candidates-table__cell--name">
                   <div class="candidates-table__data-wrapper">
                     <div class="candidates-table__avatar candidates-table__avatar--red">TL</div>
-                    <span>Nguyễn Thế Lực</span>
+                    <span>{{ checkNull(candidate.CandidateName) }}</span>
                   </div>
                 </td>
 
-                <td class="candidates-table__cell">0987654321</td>
-                <td class="candidates-table__cell">luc.nguyenthe@example.com</td>
-                <td class="candidates-table__cell">Chiến dịch Marketing Q4</td>
-                <td class="candidates-table__cell">Chuyên viên Marketing</td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.Mobile) }}</td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.Email) }}</td>
+                <td class="candidates-table__cell">
+                  {{ checkNull(candidate.RecruitmentCampaignNames) }}
+                </td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.JobPositionName) }}</td>
+                <td class="candidates-table__cell">
+                  {{ checkNull(candidate.RecruitmentRoundName) }}
+                </td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.Score) }}</td>
+                <td class="candidates-table__cell">
+                  {{ formatDate(candidate.ApplyDate) }}
+                </td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.ChannelName) }}</td>
+                <td class="candidates-table__cell">
+                  {{ checkNull(candidate.EducationDegreeName) }}
+                </td>
+                <td class="candidates-table__cell">
+                  {{ checkNull(candidate.EducationPlaceName) }}
+                </td>
+                <td class="candidates-table__cell">
+                  {{ checkNull(candidate.EducationMajorName) }}
+                </td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.WorkPlaceRecent) }}</td>
+                <td class="candidates-table__cell">
+                  {{ checkNull(candidate.AttractivePersonnel) }}
+                </td>
+                <td class="candidates-table__cell">
+                  {{ checkNull(candidate.OrganizationUnitName) }}
+                </td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.Overall) }}</td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.AreaName) }}</td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.PresenterName) }}</td>
+                <td class="candidates-table__cell">
+                  {{ checkNull(candidate.ProbationInfoStatus) }}
+                </td>
+                <td class="candidates-table__cell">
+                  {{ checkNull(candidate.IsTalentPoolDetail) }}
+                </td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.AccountPortal) }}</td>
+                <td class="candidates-table__cell">
+                  <div
+                    v-if="parseTags(checkNull(candidate.TagInfos)).length"
+                    class="candidates-table__tags"
+                  >
+                    <span
+                      v-for="tag in parseTags(checkNull(candidate.TagInfos))"
+                      :key="tag.TagID"
+                      class="candidates-table__tag"
+                      :style="{ backgroundColor: tag.TagColor, color: tag.TextColor }"
+                    >
+                      {{ tag.TagName }}
+                    </span>
+                  </div>
+                  <span v-else>---</span>
+                </td>
+                <td class="candidates-table__cell">
+                  {{ checkNull(candidate.CandidateStatusName) }}
+                </td>
+                <td class="candidates-table__cell">
+                  {{ formatGender(checkNull(candidate.Gender)) }}
+                </td>
+                <td class="candidates-table__cell">
+                  {{ formatDate(candidate.Birthday) }}
+                </td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.Address) }}</td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.ReasonRemoved) }}</td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.CollaboratorName) }}</td>
+                <td class="candidates-table__cell">
+                  {{ formatDate(candidate.HireDate) }}
+                </td>
+                <td class="candidates-table__cell">{{ checkNull(candidate.OfferStatus) }}</td>
 
-                <td class="candidates-table__cell">Phỏng vấn</td>
-                <td class="candidates-table__cell">4/5</td>
-                <td class="candidates-table__cell">15/10/2025</td>
-                <td class="candidates-table__cell">Website</td>
-                <td class="candidates-table__cell">Đại học</td>
-                <td class="candidates-table__cell">Học viện Tài chính</td>
-                <td class="candidates-table__cell">Marketing</td>
-                <td class="candidates-table__cell">Misa Tech</td>
-                <td class="candidates-table__cell">Nguyễn Thanh</td>
-                <td class="candidates-table__cell">Phòng Marketing</td>
-                <td class="candidates-table__cell">Chưa phù hợp</td>
-                <td class="candidates-table__cell">Hà Nội</td>
-                <td class="candidates-table__cell">Không</td>
-                <td class="candidates-table__cell">Email</td>
-                <td class="candidates-table__cell">Không</td>
-                <td class="candidates-table__cell">Không có</td>
-                <td class="candidates-table__cell">Tài năng trẻ</td>
-                <td class="candidates-table__cell">Chờ phỏng vấn</td>
-                <td class="candidates-table__cell">Nam</td>
-                <td class="candidates-table__cell">10/05/1998</td>
-                <td class="candidates-table__cell">TP.HCM</td>
-                <td class="candidates-table__cell">N/A</td>
-                <td class="candidates-table__cell">Không</td>
-                <td class="candidates-table__cell">10/10/2025</td>
-                <td class="candidates-table__cell">Đang chờ</td>
-
-                <td class="candidates-table__cell candidates-table__cell--sticky-action">
+                <td class="candidates-table__cell candidates-table__cell--edit">
                   <i class="fas fa-pen candidates-table__action-icon"></i>
                 </td>
               </tr>
@@ -175,7 +202,6 @@ function handleChangeModalState() {
 </template>
 
 <style scoped>
-/* candidates-page */
 .candidates-page {
   display: flex;
   flex-direction: column;
@@ -183,48 +209,6 @@ function handleChangeModalState() {
   width: 100%;
 }
 
-.candidates-page__body {
-  flex: 1;
-  width: 100%;
-  background-color: white;
-  border: 1px solid var(--ms-border-color-translucent);
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.candidates-page__toolbar {
-  height: 60px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 16px;
-  margin-right: 16px;
-}
-
-.candidates-page__table {
-  flex: 1;
-  width: 100%;
-  height: calc(100% - 60px);
-  overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #ced4da transparent;
-}
-
-.candidates-page__pagination {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  height: 60px;
-  width: 100%;
-  padding: 8px 16px;
-  border-top: 1px solid var(--ms-border-color-translucent);
-  flex-shrink: 0;
-}
-
-/* candidate-header */
 .candidate-header {
   display: flex;
   justify-content: space-between;
@@ -237,7 +221,6 @@ function handleChangeModalState() {
 .candidate-header__left {
   flex: 1;
 }
-
 .candidate-header__title {
   font-size: 20px;
   font-weight: 700;
@@ -287,7 +270,26 @@ function handleChangeModalState() {
   cursor: pointer;
 }
 
-/* toolbar */
+.candidates-page__body {
+  flex: 1;
+  width: 100%;
+  background-color: white;
+  border: 1px solid var(--ms-border-color-translucent);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.candidates-page__toolbar {
+  height: 60px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  margin-right: 16px;
+}
+
 .toolbar__button {
   display: flex;
   align-items: center;
@@ -302,7 +304,15 @@ function handleChangeModalState() {
   cursor: pointer;
 }
 
-/* candidates-table */
+.candidates-page__table {
+  flex: 1;
+  width: 100%;
+  height: calc(100% - 60px);
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ced4da transparent;
+}
+
 .candidates-table {
   width: 100%;
   height: 100%;
@@ -336,12 +346,62 @@ function handleChangeModalState() {
   white-space: nowrap;
 }
 
-.candidates-table__cell--checkbox,
-.candidates-table__cell--name,
-.candidates-table__cell--sticky-action {
+.candidates-table__cell--checkbox {
+  width: 40px;
+  padding-left: 16px;
   position: sticky;
+  left: 0;
+  z-index: 20;
   background-color: #f8f9fa;
   box-shadow: 2px 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.candidates-table__cell--name {
+  width: 200px;
+  position: sticky;
+  left: 40px;
+  z-index: 20;
+  background-color: #f8f9fa;
+  box-shadow: 2px 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.candidates-table__cell--edit {
+  width: 50px;
+  text-align: center;
+  position: sticky;
+  right: 0;
+  z-index: 20;
+  background-color: #f8f9fa;
+  box-shadow: -2px 0 3px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+}
+
+.candidates-table__row > .candidates-table__cell--checkbox {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background-color: white;
+}
+
+.candidates-table__row > .candidates-table__cell--name {
+  position: sticky;
+  left: 40px;
+  z-index: 5;
+  background-color: white;
+}
+
+.candidates-table__row > .candidates-table__cell--edit {
+  position: sticky;
+  right: 0;
+  z-index: 5;
+  background-color: white;
+}
+
+.candidates-table__cell:not(.candidates-table__cell--checkbox):not(
+    .candidates-table__cell--name
+  ):not(.candidates-table__cell--edit) {
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .candidates-table__data-wrapper {
@@ -352,18 +412,32 @@ function handleChangeModalState() {
 }
 
 .candidates-table__avatar {
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  text-align: center;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  line-height: 24px;
+  align-content: center;
+  justify-content: center;
   border-radius: 50%;
-  color: white;
-  font-size: 12px;
-  flex-shrink: 0;
+  color: #ffffff;
+  display: flex;
 }
 
 .candidates-table__avatar--red {
   background-color: #dc3545;
+}
+.candidates-table__avatar--blue {
+  background-color: #007bff;
+}
+.candidates-table__avatar--yellow {
+  background-color: #ffc107;
+}
+
+.candidates-table__status-icon--active {
+  color: #28a745;
+  font-size: 14px;
+  margin-left: 4px;
 }
 
 .candidates-table__action-icon {
@@ -375,18 +449,54 @@ function handleChangeModalState() {
   opacity: 1;
 }
 
-/* pagination */
-.pagination__left,
-.pagination__right {
+.candidates-page__pagination {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 60px;
+  width: 100%;
+  padding: 8px 16px;
+  border-top: 1px solid var(--ms-border-color-translucent);
+  flex-shrink: 0;
 }
 
-.pagination__summary,
-.pagination__text {
+.pagination__left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.pagination__summary {
   font-size: 14px;
   color: var(--ms-gray-700);
   font-weight: 600;
+}
+
+.pagination__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pagination__text {
+  font-size: 14px;
+  color: var(--ms-gray-700);
+}
+
+.candidates-page__pagination select {
+  border: 1px solid var(--ms-border-color-translucent);
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--ms-gray-800);
+  cursor: pointer;
+  height: 36px;
+  appearance: none;
+  background: white
+    url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")
+    no-repeat right 8px center;
+  background-size: 10px;
+  padding: 6px 25px 6px 10px;
 }
 
 .pagination__info-range {
@@ -400,11 +510,15 @@ function handleChangeModalState() {
 
 .pagination__controller {
   display: flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid var(--ms-border-color-translucent);
   border-radius: 4px;
   overflow: hidden;
+}
+
+.pagination__controller {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 </style>

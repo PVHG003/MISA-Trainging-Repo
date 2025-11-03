@@ -22,3 +22,9 @@
   font-size: 14px;
   color: var(--ms-secondary-text-emphasis);
 }
+
+.flex-1 {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+}
