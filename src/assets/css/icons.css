@@ -1,0 +1,136 @@
+.icon {
+  mask-image: url('@/assets/icons/ICON.svg');
+  mask-repeat: no-repeat;
+  background-color: #7a8188;
+  width: 24px;
+  height: 24px;
+}
+
+.icon__global {
+  mask-position: 0 -608px;
+}
+
+.icon__recruitment-new {
+  mask-position: -96px -112px;
+}
+
+.icon__candidates {
+  mask-position: -25px -114px;
+}
+
+.icon__calender {
+  mask-position: -145px -113px;
+}
+
+.icon__potential-pool {
+  mask-position: -2px -114px;
+}
+
+.icon__campaign {
+  mask-position: -73px -633px;
+}
+
+.icon__task {
+  mask-position: -336px -113px;
+}
+
+.icon__ai-marketing {
+  mask-position: -160px -248px;
+}
+
+.icon__chat-bubble {
+  mask-position: -145px -609px;
+}
+
+.icon__report {
+  mask-position: -74px -114px;
+}
+
+.icon__settings {
+  mask-position: 0 -136px;
+}
+
+.icon__close {
+  mask-position: -73px -136px;
+}
+
+.icon__add {
+  mask-position: -20px -656px;
+  height: 20px;
+  width: 20px;
+  background-color: var(--ms-white);
+}
+
+.icon__chevron-down {
+  mask-position: -32px -48px;
+  height: 16px;
+  width: 16px;
+  background-color: var(--ms-white);
+}
+
+.icon__filter {
+  mask-position: -38px -654px;
+  height: 24px;
+  width: 24px;
+}
+
+.icon__export {
+  mask-position: -58px -655px;
+  height: 24px;
+  width: 24px;
+}
+
+.icon__interaction-history {
+  mask-position: 0 -845px;
+}
+
+.icon__edit {
+  mask-position: 0 0;
+  height: 24px;
+  width: 24px;
+}
+
+.icon__announcement {
+  mask-image: url('@/assets/icons/icon-notifi.svg');
+  width: 24px;
+  height: 24px;
+}
+
+.icon__bell {
+  mask-image: url('../icons/icon-ring.svg');
+  width: 24px;
+  height: 24px;
+}
+
+.icon__help {
+  mask-image: url('@/assets/icons/icon-helpmenu.svg');
+  width: 24px;
+  height: 24px;
+}
+
+.icon__more-menu {
+  mask-image: url('@/assets/icons/icon-moremenu.svg');
+  width: 24px;
+  height: 24px;
+}
+
+.icon__knowledge {
+  mask-image: url('@/assets/icons/icon-knowledge.svg');
+  background-color: var(--ms-yellow);
+  width: 24px;
+  height: 24px;
+}
+
+.icon__cart {
+  background: url('@/assets/icons/icon-cart.svg') no-repeat;
+  background-size: contain;
+  width: 24px;
+  height: 24px;
+}
+
+.icon__message {
+  background: url('@/assets/icons/icon-message.svg') no-repeat;
+  background-size: contain;
+  width: 24px;
+  height: 24px;
+}

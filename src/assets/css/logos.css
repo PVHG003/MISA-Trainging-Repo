@@ -1,0 +1,12 @@
+.logo__icon-switch {
+  background: url("@/assets/icons/icon-switch.svg") no-repeat;
+  background-size: contain;
+  height: 24px;
+  width: 24px;
+}
+
+.logo__icon-app {
+  background: url("@/assets/icons/ICON.svg") no-repeat -226px -276px;
+  width: 32px;
+  height: 32px;
+}
