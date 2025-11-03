@@ -84,10 +84,6 @@
   cursor: pointer;
 }
 
-.app-navbar__search-input::placeholder {
-  color: #a0a0a0;
-}
-
 .app-navbar__right {
   display: flex;
   align-items: center;
