@@ -1,27 +1,33 @@
-<script setup lang="ts">
-interface OptionItem {
-  key: string
-  value: string
-}
-
-defineProps<{
-  name: string
-  options?: OptionItem[]
-  modelValue?: string | number
-  placeholder?: string
-  required?: boolean
-  style?: Record<string, any>
-}>()
+<script setup>
+const props = defineProps({
+  modelValue: [String, Number],
+  label: String,
+  required: Boolean,
+  placeholder: String,
+  options: {
+    type: Array,
+    default: () => [],
+  },
+  disabled: Boolean,
+  objectStyle: Object,
+  name: String,
+})
 </script>
 
 <template>
-  <div class="select-group" :style="style">
+  <div class="select-group" :style="objectStyle">
     <div class="select-group__label">
-      <slot name="label" /> <span style="color: red">{{ required === true ? '*' : '' }}</span>
+      <slot name="label" />
+      <span style="color: red">{{ required ? '*' : '' }}</span>
     </div>
     <div class="input__wrapper">
-      <select :name="name" :value="modelValue">
-        <option value="" disabled selected>{{ placeholder }}</option>
+      <select
+        :name="name"
+        :value="props.modelValue"
+        :disabled="props.disabled"
+        @change="$emit('update:modelValue', $event.target.value)"
+      >
+        <option value="" disabled>{{ placeholder }}</option>
         <option v-for="option in options" :key="option.key" :value="option.value">
           {{ option.value }}
         </option>
@@ -47,7 +53,7 @@ defineProps<{
 .select-group select {
   width: 100%;
   height: 32px;
-  border: 1px solid #1e2633;
+  border-color: var(--ms-border-color-translucent);
   border-radius: 4px;
   padding: 4px 8px;
   font-size: 14px;

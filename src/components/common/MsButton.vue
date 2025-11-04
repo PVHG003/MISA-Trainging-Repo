@@ -17,15 +17,15 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  style: {
+  objectStyle: {
     type: Object,
-    default: () => ({}),
+    default: () => {},
   },
 })
 </script>
 
 <template>
-  <button class="btn" :class="`btn--${variant}`" :disabled="disabled" :style="style">
+  <button class="btn" :class="`btn--${variant}`" :disabled="disabled" :style="objectStyle">
     <slot>{{ label }}</slot>
   </button>
 </template>

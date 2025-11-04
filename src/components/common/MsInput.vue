@@ -28,8 +28,7 @@ defineProps({
         'time',
         'url',
         'week',
-        'select',
-        'none',
+        'textarea',
       ].includes(value),
   },
   placeholder: {
@@ -40,25 +39,21 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  style: {
+  objectStyle: {
     type: Object,
     default: () => {},
-  },
-  customClass: {
-    type: String,
-    default: '',
   },
 })
 </script>
 
 <template>
-  <div class="input-group" :style="style" :class="customClass">
+  <div class="input-group" :style="objectStyle">
     <div class="input-group__label">
       <slot name="label" />
       <span style="color: red">{{ required === true ? '*' : '' }}</span>
     </div>
     <div class="input-group__controller">
-      <div class="input__wrapper">
+      <div class="input__wrapper" @input="$emit('update:modelValue', $event.target.value)">
         <input :type="inputType" :placeholder="placeholder" :value="modelValue" />
       </div>
     </div>
@@ -70,7 +65,7 @@ defineProps({
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 
 .input-group__label {
@@ -87,8 +82,7 @@ defineProps({
   line-height: 32px;
   padding: 2px 16px 0;
   font-size: 14px;
-  outline: none;
-  border: 1px solid #1e2633;
+  border-color: var(--ms-border-color-translucent);
   width: 100%;
   border-radius: 4px;
 }

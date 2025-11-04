@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import AddCandidateForm from '@/components/AddCandidateForm.vue'
+import AddCandidateForm from '@/views/candidate/AddCandidateForm.vue'
 import { CandidateTableHeaderEnum } from '@/constants/candidateTableHeaderEnum.js'
 import { CandidateData } from '@/resources/candidateData.js'
 import { checkNull, formatDate, formatGender, parseTags } from '@/utils/formatUtils.js'
@@ -75,6 +75,8 @@ function handleChangeModalState() {
                 >
                   {{ label }}
                 </th>
+
+                <th>&nbsp;</th>
               </tr>
             </thead>
             <tbody>
@@ -103,7 +105,20 @@ function handleChangeModalState() {
                 <td class="candidates-table__cell">
                   {{ checkNull(candidate.RecruitmentRoundName) }}
                 </td>
-                <td class="candidates-table__cell">{{ checkNull(candidate.Score) }}</td>
+                <td class="candidates-table__cell">
+                  <div class="cell__wrapper">
+                    <div class="stars">
+                      <template v-for="i in 5" :key="i">
+                        <span v-if="i <= Math.floor(candidate.Score.source ?? candidate.Score)"
+                          ><i class="fa-solid fa-star" style="color: var(--ms-yellow)"></i
+                        ></span>
+                        <span v-else
+                          ><i class="fa-solid fa-star" style="color: var(--ms-gray-300)"></i
+                        ></span>
+                      </template>
+                    </div>
+                  </div>
+                </td>
                 <td class="candidates-table__cell">
                   {{ formatDate(candidate.ApplyDate) }}
                 </td>
@@ -325,7 +340,7 @@ function handleChangeModalState() {
 }
 
 .candidates-table__header {
-  background-color: #f8f9fa;
+  background-color: #dbdbdb;
   position: sticky;
   top: 0;
   z-index: 15;
@@ -365,6 +380,10 @@ function handleChangeModalState() {
   box-shadow: 2px 0 3px rgba(0, 0, 0, 0.05);
 }
 
+.candidates-table__row > th {
+  background-color: #dbdbdb;
+}
+
 .candidates-table__cell--edit {
   width: 50px;
   text-align: center;
@@ -380,14 +399,12 @@ function handleChangeModalState() {
   position: sticky;
   left: 0;
   z-index: 5;
-  background-color: white;
 }
 
 .candidates-table__row > .candidates-table__cell--name {
   position: sticky;
   left: 40px;
   z-index: 5;
-  background-color: white;
 }
 
 .candidates-table__row > .candidates-table__cell--edit {
